@@ -1,12 +1,12 @@
-from aiogram.filters import Command
 from aiogram import Router, types
-from random import choice
+from aiogram.filters import Command
+import random
 
-rnd_router = Router()
+random_router = Router()
 
-@rnd_router.message(Command('random'))
-async def start_handler(message: types.Message):
-    names = ["alex", "edward", "max", "daniel"]
-    name = choice(names)
-    await message.answer(f"random name in list: {name}")
+names = ["Алексей", "Мария", "Иван", "Елена", "Сергей"]
 
+@random_router.message(Command("random"))  # Декоратор должен быть перед функцией
+async def random_command(message: types.Message):
+    random_name = random.choice(names)
+    await message.reply(f"Случайное имя: {random_name}")
