@@ -1,6 +1,7 @@
 import asyncio
 
-from dialog import dialogue_router
+# from handlers.fh import review_router
+from handlers.review_dialog import review_router
 from handlers.random import random_router
 from bot_config import bot, dp
 from handlers.echo import echo_router
@@ -12,7 +13,9 @@ async def main():
     dp.include_router(start_router)
     dp.include_router(info_router)
     dp.include_router(random_router)
-    dp.include_router(dialogue_router)
+    # dp.include_router(review_router)
+    dp.include_router(review_router)
+
     dp.include_router(echo_router)
     await dp.start_polling(bot)
 

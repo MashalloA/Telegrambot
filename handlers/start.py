@@ -22,6 +22,12 @@ async def start_handler(message: types.Message):
                 text="my tg channel",
                 url="t.me/+1pVI9RuurtQzY2Qy",
             )
+        ],
+        [
+            types.InlineKeyboardButton(
+                text="leave feedback",
+                callback_data="review"
+            )
         ]
     ]
 )
