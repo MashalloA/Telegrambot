@@ -1,3 +1,5 @@
+from gc import callbacks
+
 from aiogram import Router, types, F
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton, Message
 from aiogram.fsm.context import FSMContext
@@ -14,6 +16,7 @@ class RestaurantReview(StatesGroup):
     food_rating = State()
     cleanliness_rating = State()
     extra_comments = State()
+    rating = State()
 
 
 @review_router.callback_query(F.data == "review")
@@ -41,19 +44,34 @@ async def ask_phone_or_instagram(message: Message, state: FSMContext):
 async def ask_visit_date(message: Message, state: FSMContext):
     await state.update_data(visit_date=message.text)
 
-    food_rating_kb = ReplyKeyboardMarkup(
-        keyboard=[
-            [KeyboardButton(text="1"), KeyboardButton(text="2"), KeyboardButton(text="3")],
-            [KeyboardButton(text="4"), KeyboardButton(text="5")]
-        ], resize_keyboard=True, one_time_keyboard=True
-    )
+    food_rating_kb = ReplyKeyboardMarkup(keyboard=[
+        [
+            KeyboardButton(text="1"),
+            KeyboardButton(text="2")
+        ],
+        [
+            KeyboardButton(text="3"),
+            KeyboardButton(text="4"),
+            KeyboardButton(text="5"),
+        ]
+    ])
+
+
     await message.answer("Как оцениваете качество еды?", reply_markup=food_rating_kb)
     await state.set_state(RestaurantReview.food_rating)
+
 
 
 @review_router.message(RestaurantReview.food_rating)
 async def ask_food_rating(message: Message, state: FSMContext):
     await state.update_data(food_rating=message.text)
+    rating = message.text
+    rating = int(rating)
+    if rating <= 3:
+        await message.answer("постараемся улучшить качество еды")
+    elif rating > 3:
+        await message.answer("спасио за оценку")
+
 
     cleanliness_rating_kb = ReplyKeyboardMarkup(
         keyboard=[
@@ -68,6 +86,14 @@ async def ask_food_rating(message: Message, state: FSMContext):
 @review_router.message(RestaurantReview.cleanliness_rating)
 async def ask_cleanliness_rating(message: Message, state: FSMContext):
     await state.update_data(cleanliness_rating=message.text)
+
+    rating = message.text
+    rating = int(rating)
+    if rating <= 3:
+        await message.answer("к следущему вашему визиту все будет чисто.")
+    elif rating > 3:
+        await message.answer("спасио за оценку")
+
     await message.answer("Дополнительные комментарии или жалобы:")
     await state.set_state(RestaurantReview.extra_comments)
 
@@ -75,6 +101,7 @@ async def ask_cleanliness_rating(message: Message, state: FSMContext):
 @review_router.message(RestaurantReview.extra_comments)
 async def receive_extra_comments(message: Message, state: FSMContext):
     await state.update_data(extra_comments=message.text)
+
 
     user_data = await state.get_data()
     review_text = (
