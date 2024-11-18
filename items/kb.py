@@ -40,11 +40,13 @@ def rating_kb():
     kb_visit_rating = ReplyKeyboardMarkup(
         keyboard=[
             [
-                KeyboardButton(text="плохо")
+                KeyboardButton(text="1"),
+                KeyboardButton(text="2"),
             ],
             [
-                KeyboardButton(text="хорошо"),
-                KeyboardButton(text="отлично")
+                KeyboardButton(text="3"),
+                KeyboardButton(text="4"),
+                KeyboardButton(text="5"),
             ]
         ],
         resize_keyboard=True,
