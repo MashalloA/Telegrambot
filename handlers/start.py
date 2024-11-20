@@ -8,7 +8,7 @@ id_list = []
 @start_router.message(Command('start'))
 async def start_handler(message: types.Message):
     name = message.from_user.first_name
-    msg = f"Привет {name}"
+    msg = f"Привет {name}, {message.from_user.id}"
     kb = InlineKeyboardMarkup(
         inline_keyboard=[
         [
