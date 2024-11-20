@@ -4,7 +4,6 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 import items.kb as kb
-import sqlite3
 
 from bot_config import database
 
@@ -49,28 +48,28 @@ async def ask_phone(message: Message, state: FSMContext):
 
 @review_router.message(RestaurantReview.visit_date)
 async def ask_visit_date(message: Message, state: FSMContext):
-    await state.update_data(food_rating=message.text)
+    await state.update_data(visit_date=message.text)
     await message.answer("оцените качество еды", reply_markup=kb.rating_kb())
     await state.set_state(RestaurantReview.food_rating)
 
 
 @review_router.message(RestaurantReview.food_rating, F.text.in_(["1", "2", "3", "4", "5"]))
 async def ask_food_rating(message: Message, state: FSMContext):
-    await state.update_data(cleanliness_rating=message.text)
+    await state.update_data(food_rating=message.text)
     await message.answer("оцените качество чистоты", reply_markup=kb.rating_kb())
     await state.set_state(RestaurantReview.cleanliness_rating)
 
 
 @review_router.message(RestaurantReview.cleanliness_rating, F.text.in_(["1", "2", "3", "4", "5"]))
 async def ask_cleanliness_rating(message: Message, state: FSMContext):
-    await state.update_data(extra_comments=message.text)
+    await state.update_data(cleanliness_rating=message.text)
     await message.answer("дополнительные комментарии:", reply_markup=ReplyKeyboardRemove())
     await state.set_state(RestaurantReview.extra_comments)
 
 
 @review_router.message(RestaurantReview.extra_comments)
 async def ask_extra_comments(message: Message, state: FSMContext):
-    await state.update_data(thanks=message.text)
+    await state.update_data(extra_comments=message.text)
     await message.answer("спасибо за пройденный опрос")
     data = await state.get_data()
     print(data)
