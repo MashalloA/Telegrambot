@@ -1,15 +1,17 @@
 import asyncio
 
 from handlers.random import random_router
-from bot_config import bot, dp, database
+from bot_config import bot, dp, database, dishes
 from handlers.echo import echo_router
 from handlers.review_dialog import review_router
 from handlers.start import start_router
 from handlers.info import info_router
+from handlers.dishes import dishes_router
 
 
 async def on_startup(bot):
     database.create_table()
+    dishes.create_dishes_table()
     await bot.send_message(chat_id=5634438231, text="я онлайн")
 
 async def main():
@@ -17,6 +19,7 @@ async def main():
     dp.include_router(info_router)
     dp.include_router(random_router)
     dp.include_router(review_router)
+    dp.include_router(dishes_router)
 
     dp.include_router(echo_router)
 

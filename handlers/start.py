@@ -27,8 +27,13 @@ async def start_handler(message: types.Message):
             types.InlineKeyboardButton(
                 text="leave feedback",
                 callback_data="review"
+            ),
+            types.InlineKeyboardButton(
+                text="show dishes",
+                callback_data="show_dishes"
             )
         ]
+
     ]
 )
     await message.answer(msg, reply_markup=kb)
