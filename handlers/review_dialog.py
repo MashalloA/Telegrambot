@@ -75,7 +75,7 @@ async def ask_extra_comments(message: Message, state: FSMContext):
     print(data)
     database.execute(
         query="""
-    INSERT INTO reviews (name, phone_number, visit_date, food_rating, cleanliness_rating, extra_comments)
+    INSERT INTO review (name, phone_number, visit_date, food_rating, cleanliness_rating, extra_comments)
     VALUES (?, ?, ?, ?, ?, ?)
     """,
         params=(data["name"], data["phone_number"], data["visit_date"], data["food_rating"], data["cleanliness_rating"], data["extra_comments"])

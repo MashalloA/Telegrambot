@@ -18,9 +18,23 @@ class Database:
                 extra_comments TEXT
             )
             """)
+
+            conn.execute("""
+            CREATE TABLE IF NOT EXISTS dishes(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            food_name TEXT NOT NULL,
+            description TEXT,
+            price INTEGER NOT NULL)
+            """)
             conn.commit()
 
     def execute(self, query: str, params: tuple):
         with sqlite3.connect(self.path) as conn:
             conn.execute(query, params)
             conn.commit()
+
+    def execute1(self, query: str, params: tuple = ()):
+        with sqlite3.connect(self.path) as conn:
+            cursor = conn.execute(query, params)
+            conn.commit()
+            return cursor
