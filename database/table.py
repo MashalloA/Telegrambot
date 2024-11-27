@@ -26,7 +26,15 @@ class Database:
             description TEXT,
             price INTEGER NOT NULL)
             """)
+
+            conn.execute("""
+            CREATE TABLE IF NOT EXISTS dish_categories (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                category_name TEXT NOT NULL UNIQUE
+                )
+            """)
             conn.commit()
+
 
     def execute(self, query: str, params: tuple):
         with sqlite3.connect(self.path) as conn:

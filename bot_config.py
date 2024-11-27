@@ -7,4 +7,3 @@ bot = Bot(token=token)
 dp = Dispatcher()
 
 database = Database("database.db")
-dishes = ("dishes.db")

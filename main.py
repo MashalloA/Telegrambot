@@ -1,5 +1,6 @@
 import asyncio
 
+from handlers.add_category import category_router
 from handlers.admin import admin_router
 from handlers.dishes import dishes_router
 from handlers.random import random_router
@@ -20,6 +21,7 @@ async def main():
     dp.include_router(review_router)
     dp.include_router(admin_router)
     dp.include_router(dishes_router)
+    dp.include_router(category_router)
 
     dp.include_router(echo_router)
 
